@@ -30,23 +30,38 @@ static int date_diff(const struct date* start_date,const  struct date* end_date)
         return end_date->dd - start_date->dd;
     }
     res = res + month[start_date->mm - 1] - start_date->dd;
-    //printf("%d\n", res);
     for(int i=start_date->mm+1; i<end_date->mm; i++){
         res = res + month[i];
-        //printf("%d\n", res);
     }
-    //printf("%d\n", res);
     res = res + end_date->dd;
-    //printf("%d\n", res);
     return res;
 }
 
-static void disp_data(struct details* det,int limit){
+static void disp_data_by_day(struct details* det,int limit){
     printf("NAME\t\t\tAMOUNT\n");
+    float total_amt = 0;
     for(int i=0; i<limit; i++){
+        total_amt += det[i].amt;
         printf("%s\t\tRs.%.2f\n", det[i].name, det[i].amt);
     }
-    printf("\n");
+    printf("Total amount: Rs.%.2f\n", total_amt);
+}
+
+static int get_random_val(int min, int max){
+    return rand()%(max - min + 1) + min;
+}
+
+static void generate_array_of_unique_indices(int* arr, int max){
+    int used[50] = {0};
+    int i = 0;
+    while(i<max){
+        int num = rand()%50;
+        if(used[num] == 0){
+            arr[i]= num;
+            used[num]=1;
+            ++i;
+        }
+    }
 }
 
 void generate_bill(const struct date* start_date,const  struct date* end_date){
@@ -55,18 +70,17 @@ void generate_bill(const struct date* start_date,const  struct date* end_date){
     struct bill b[n+1];
     int limit;
     for(int i=0; i<=n; i++){
-        limit = 20 + rand()%21;
+        //limit = 20 + rand()%21;
+        limit = get_random_val(20, 40);
         int temp[limit];
+        generate_array_of_unique_indices(temp, limit);
         for(int j=0; j<limit; j++){
-            temp[j] = rand()%limit;
+            //temp[j] = rand()%limit;
             strcpy(b[i].d[j].name, p[temp[j]].name);
             b[i].d[j].amt = (100+ rand()%(5000-100)) + (double)rand()/100;
         }
-        printf("Bill day: %d\n", i+1);
-        disp_data(b[i].d, limit);
+        printf("\nDay %d : Bill details\n", i+1);
+        disp_data_by_day(b[i].d, limit);
     }
-    // for(int k=0;k<limit; k++){
-    //         printf("%s, Rs.%.2f\n", b[0].d[k].name, b[0].d[k].amt);
-    // }
 }
 
