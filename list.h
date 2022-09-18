@@ -1,10 +1,6 @@
 #ifndef LIST_H
 #define LIST_H
 
-// struct amount{
-//     int rp;
-//     int ps;
-// };
 struct date{
     int dd;
     int mm;
