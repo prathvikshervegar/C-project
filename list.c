@@ -34,17 +34,7 @@ static int date_diff(const struct date* start_date,const  struct date* end_date)
         res = res + month[i];
     }
     res = res + end_date->dd;
-    return res;
-}
-
-static void disp_data_by_day(struct details* det,int limit){
-    printf("NAME\t\t\tAMOUNT\n");
-    float total_amt = 0;
-    for(int i=0; i<limit; i++){
-        total_amt += det[i].amt;
-        printf("%s\t\tRs.%.2f\n", det[i].name, det[i].amt);
-    }
-    printf("Total amount: Rs.%.2f\n", total_amt);
+    return(res);
 }
 
 static int get_random_val(int min, int max){
@@ -61,6 +51,33 @@ static void generate_array_of_unique_indices(int* arr, int max){
             used[num]=1;
             ++i;
         }
+    }
+}
+
+static void disp_data_by_day(const struct details* det,int limit){
+    printf("\tNAME\t\t\tAMOUNT\n");
+    float total_amt = 0;
+    for(int i=0; i<limit; i++){
+        total_amt += det[i].amt;
+        printf("%d.\t%s\t\tRs.%.2f\n", i+1, det[i].name, det[i].amt);
+    }
+    printf("Total amount: Rs.%.2f\n", total_amt);
+}
+
+static void disp_data_by_person(struct bill* b, int days){
+    printf("\tNAME\t\t\tTOTAL AMOUNT\n");
+    double total[50] = {0};
+    for(int i=0; i<days; i++){
+        for(int k=0; k<50; k++){
+            for(int j=0; j<40; j++){    
+                if(!(strcmp(b[i].d[j].name,p[k].name))){
+                    total[k] += b[i].d[j].amt;
+                }
+            }
+        }
+    }
+    for(int x=0; x<50; x++){
+        printf("%d.\t%s\t\tRs.%.2f\n", x+1, p[x].name, total[x]);
     }
 }
 
@@ -82,5 +99,7 @@ void generate_bill(const struct date* start_date,const  struct date* end_date){
         printf("\nDay %d : Bill details\n", i+1);
         disp_data_by_day(b[i].d, limit);
     }
+    printf("\nBill details of all persons\n");
+    disp_data_by_person(b,n+1);
 }
 
