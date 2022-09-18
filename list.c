@@ -17,7 +17,6 @@ void read_cust_data(FILE* fp){
             //printf("%d %s\n", i+1, p[i].name);
         }
     }
-    //printf("%s", p[i].name);
 }
 
 static int date_diff(const struct date* start_date,const  struct date* end_date){
