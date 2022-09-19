@@ -95,7 +95,7 @@ void generate_bill(const struct date* start_date,const  struct date* end_date){
             strcpy(b[i].d[j].name, p[temp[j]].name);
             b[i].d[j].amt = (100+ rand()%(5000-100)) + (double)rand()/100;
         }
-        printf("\nDay %d : Bill details\n", i+1);
+        printf("\nBill details of %d-%d-%d\n", start_date->dd+i, start_date->mm, start_date->yy);
         disp_data_by_day(b[i].d, limit);
     }
     printf("\nBill details of all persons\n");

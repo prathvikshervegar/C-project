@@ -8,15 +8,12 @@ int main(){
     read_cust_data(fp);
 
     struct date start_date;
-    printf("Enter the year of billing: ");
-    scanf("%d", &start_date.yy);
-    printf("Enter billing start date(dd mm): ");
-    scanf("%d %d", &start_date.dd, &start_date.mm);
+    printf("Enter billing start date(dd mm yy): ");
+    scanf("%d %d %d", &start_date.dd, &start_date.mm, &start_date.yy);
 
     struct date end_date;
-    end_date.yy = start_date.yy;
-    printf("Enter billing end date(dd mm): ");
-    scanf("%d %d", &end_date.dd, &end_date.mm);
+    printf("Enter billing end date(dd mm yyyy): ");
+    scanf("%d %d %d", &end_date.dd, &end_date.mm, &end_date.yy);
 
     generate_bill(&start_date, &end_date);
 }
