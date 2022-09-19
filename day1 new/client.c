@@ -27,4 +27,6 @@ int main(){
     generate_bill(b, &start_date, n+1, p);
     disp_data_by_day(b, n+1, p);
     disp_data_by_person(b, n+1, p);
+
+    fclose(fp);
 }
