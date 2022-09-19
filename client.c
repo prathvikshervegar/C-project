@@ -8,7 +8,7 @@ int main(){
     read_cust_data(fp);
 
     struct date start_date;
-    printf("Enter billing start date(dd mm yy): ");
+    printf("Enter billing start date(dd mm yyyy): ");
     scanf("%d %d %d", &start_date.dd, &start_date.mm, &start_date.yy);
 
     struct date end_date;
