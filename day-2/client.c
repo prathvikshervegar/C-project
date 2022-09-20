@@ -16,18 +16,18 @@ int main(){
     printf("Enter billing start date(dd mm yyyy): ");
     scanf("%d %d %d", &start_date.dd, &start_date.mm, &start_date.yy);
     if(! is_valid_date(&start_date)){
-        printf("Invalid date provided!!!");
+        printf("Invalid date provided!!!\n");
         exit(1);
     }
     struct date end_date;
     printf("Enter billing end date(dd mm yyyy): ");
     scanf("%d %d %d", &end_date.dd, &end_date.mm, &end_date.yy);
     if(! is_valid_date(&end_date)){
-        printf("Invalid date provided!!!");
+        printf("Invalid date provided!!!\n");
         exit(1);
     }
     if(! is_valid_range(&start_date, &end_date)){
-        printf("Invalid range provided!!!");
+        printf("Invalid range provided!!!\n");
         exit(1);
     }
     int n = date_diff(&start_date, &end_date);

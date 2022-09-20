@@ -205,7 +205,7 @@ void disp_data_by_person(struct bill* b, int days, char* cur_name){
 }
 
 void disp_data_all_days(struct bill* b, int days){
-
+    
 }
 
 void disp_data_all_hours(struct bill* b, int days){
