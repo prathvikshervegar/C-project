@@ -31,7 +31,7 @@ int main(){
         exit(1);
     }
     int n = date_diff(&start_date, &end_date);
-    printf("%d", n);
+    //printf("%d", n);
     struct bill b[n+1];
 
     generate_bill(b, &start_date, start_day, n+1, p);
