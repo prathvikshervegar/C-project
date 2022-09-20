@@ -52,7 +52,7 @@ int date_diff(const struct date* start_date,const  struct date* end_date){
         return end_date->dd - start_date->dd;
     }
     res = res + month[start_date->mm - 1] - start_date->dd;
-    for(int i=start_date->mm+1; i<end_date->mm; i++){
+    for(int i=start_date->mm; i<end_date->mm-1; i++){
         res = res + month[i];
     }
     res = res + end_date->dd;
@@ -120,13 +120,14 @@ static void set_period(int* hr1, char* p1, int* hr2, char* p2){
 void disp_data_all_dates(struct bill* b, int days){
     int hr1, hr2;
     char p1[3], p2[3];
+    int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
     for(int i=0; i<days; i++){
         printf("\nBill details of %d-%d-%d\n", b[i].dt.dd, b[i].dt.mm, b[i].dt.yy);
         if(b[i].day != 2){
             printf("\tTime\t\t\tNAME\t\t\tAMOUNT\n");
             for(int j=0; j<b[i].limit; j++){
-                hr1 = b[i].d[j].interval;
-                hr2 = b[i].d[j].interval+1;
+                hr1 = time[b[i].d[j].interval];
+                hr2 = time[b[i].d[j].interval]+1;
                 set_period(&hr1, p1, &hr2, p2);
                 printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n", j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
             }
@@ -162,6 +163,7 @@ void disp_data_by_date(struct bill* b, int days, struct date cur_date){
     int i=0;
     int hr1, hr2;
     char p1[3], p2[3];
+    int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
     while(i<days){
         if(b[i].dt.dd == cur_date.dd && b[i].dt.mm == cur_date.mm && b[i].dt.yy == cur_date.yy){
             if(b[i].day == 2){
@@ -169,8 +171,8 @@ void disp_data_by_date(struct bill* b, int days, struct date cur_date){
             }
             else{
                 for(int j=0; j<b[i].limit; j++){
-                    hr1 = b[i].d[j].interval;
-                    hr2 = b[i].d[j].interval+1;
+                    hr1 = time[b[i].d[j].interval];
+                    hr2 = time[b[i].d[j].interval]+1;
                     set_period(&hr1, p1, &hr2, p2);
                     printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n", j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
                 }
@@ -197,19 +199,45 @@ void disp_data_by_person(struct bill* b, int days, char* cur_name){
         }
     }
     if(!found){
-        printf("%s has no billing data\n", cur_name);
+        printf("\n%s has no billing data\n", cur_name);
     }
     else{
-        printf("Name: %s\tTotal Amount: Rs.%.2f\n", cur_name, total);
+        printf("\nName: %s\nTotal Amount: Rs.%.2f\n", cur_name, total);
     }
 }
 
 void disp_data_all_days(struct bill* b, int days){
-    
+    double total[7] = {0};
+    char day_name[7][10] = {"Monday  ", "Tuesday  ", "Wednesday", "Thursday", "Friday  ", "Saturday", "Sunday  "};
+    printf("DAY\t\tTOTAL AMOUNT\n");
+    for(int i=0; i<days; i++){
+        total[b[i].day-1] += b[i].total_amt;
+    }
+    for(int x=0; x<7; x++){
+        if(total[x] == 0)
+            printf("%s\tNo sales\n", day_name[x]);
+        else
+            printf("%s\tRs.%.2f\n",day_name[x], total[x]);
+    }
 }
 
 void disp_data_all_hours(struct bill* b, int days){
-
+    double total[MAX_INTERVALS] = {0};
+    int hr1, hr2;
+    char p1[3], p2[3];
+    int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
+    for(int i=0; i<days; i++){
+        for(int j=0; j<b[i].limit; j++){
+            total[b[i].d[j].interval] += b[i].d[j].amt;
+        }
+    }
+    printf("TIME INTERVAL\t\tTOTAL AMOUNT\n");
+    for(int x=0; x<MAX_INTERVALS; x++){
+        hr1 = time[x];
+        hr2 = time[x]+1;
+        set_period(&hr1, p1, &hr2, p2);
+        printf("%d:00%s-%d:00%s\t\tRs.%.2f\n",hr1,p1,hr2,p2, total[x]);
+    }
 }
 
 static void next_date(struct date* bill_date){
@@ -232,8 +260,6 @@ static void next_date(struct date* bill_date){
 }
 
 void generate_bill(struct bill* b, const struct date* start_date, int bill_day, int days, struct person* p){
-    // 8-9, 9-10, 10-11, 11-12, 12-13, 16-17, 17-18, 18-19, 19-20, 20-21, 21-22
-    int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
     struct date bill_date = *start_date;
     for(int i=0; i<days; i++){
         b[i].dt = bill_date;
@@ -245,7 +271,7 @@ void generate_bill(struct bill* b, const struct date* start_date, int bill_day, 
             generate_array_of_unique_indices(temp, b[i].limit);
             for(int j=0; j<b[i].limit; j++){
                 //temp[j] = rand()%limit;
-                b[i].d[j].interval = time[rand()%MAX_INTERVALS];
+                b[i].d[j].interval = rand()%MAX_INTERVALS;
                 strcpy(b[i].d[j].p.name, p[temp[j]].name);
                 b[i].d[j].amt = (MIN_BILL_AMT+ rand()%(MAX_BILL_AMT-MIN_BILL_AMT)) + (double)rand()/100;
                 b[i].total_amt += b[i].d[j].amt;

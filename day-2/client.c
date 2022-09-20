@@ -31,6 +31,7 @@ int main(){
         exit(1);
     }
     int n = date_diff(&start_date, &end_date);
+    printf("%d", n);
     struct bill b[n+1];
 
     generate_bill(b, &start_date, start_day, n+1, p);
@@ -38,30 +39,33 @@ int main(){
     int choice;
     struct date cur_date;
     char full_name[30], last_name[30];
-    printf("\n1 - Bills of all dates\n2 - Bills of all persons\n3 - Bills of all days\n4 - Bills of all hours\n5 - Bills of given date\n6 - Bills of given person\n\nEnter the choice for report: ");
-    scanf("%d", &choice);
-    switch(choice){
-        case 1: disp_data_all_dates(b, n+1);
-                break;
-        case 2: disp_data_all_persons(b, n+1, p);
-                break;
-        case 3: disp_data_all_days(b, n+1);
-                break;
-        case 4: disp_data_all_hours(b, n+1);
-                break;
-        case 5: printf("Enter the date(dd mm yyyy): ");
-                scanf("%d %d %d",&cur_date.dd, &cur_date.mm, &cur_date.yy);
-                disp_data_by_date(b, n+1, cur_date);
-                break;
-        case 6: printf("Enter the name of person: ");
-                //fgets(cur_name, sizeof(cur_name), stdin);
-                scanf("%s", full_name);
-                scanf("%s", last_name);
-                strcat(full_name, " ");
-                strcat(full_name, last_name);
-                disp_data_by_person(b, n+1, full_name);
-                break;
-        default: printf("Invalid choice!!!\n");
+    while(1){
+        printf("\n1 - Bills of all dates\n2 - Bills of all persons\n3 - Bills of all days\n4 - Bills of all intervals\n5 - Bills of given date\n6 - Bills of given person\n7 - Exit\n\nEnter the choice for report: ");
+        scanf("%d", &choice);
+        switch(choice){
+            case 1: disp_data_all_dates(b, n+1);
+                    break;
+            case 2: disp_data_all_persons(b, n+1, p);
+                    break;
+            case 3: disp_data_all_days(b, n+1);
+                    break;
+            case 4: disp_data_all_hours(b, n+1);
+                    break;
+            case 5: printf("Enter the date(dd mm yyyy): ");
+                    scanf("%d %d %d",&cur_date.dd, &cur_date.mm, &cur_date.yy);
+                    disp_data_by_date(b, n+1, cur_date);
+                    break;
+            case 6: printf("Enter the name of person(Firstname Lastname): ");
+                    //fgets(cur_name, sizeof(cur_name), stdin);
+                    scanf("%s", full_name);
+                    scanf("%s", last_name);
+                    strcat(full_name, " ");
+                    strcat(full_name, last_name);
+                    disp_data_by_person(b, n+1, full_name);
+                    break;
+            case 7: exit(1);
+            default: printf("Invalid choice!!!\n");
+        }    
     }
     fclose(fp);
 }
