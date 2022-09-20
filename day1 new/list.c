@@ -105,9 +105,6 @@ void disp_data_by_person(struct bill* b, int days, struct person* p){
 }
 
 void generate_bill(struct bill* b, const struct date* start_date, int days, struct person* p){
-    
-    //printf("%d", n);
-    //int limit;
     int month[MAX_MONTH] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     if((start_date->yy%4 ==0 && start_date->yy%100 != 0) || (start_date->yy%400 == 0) ){
         month[1]=29;

@@ -8,6 +8,7 @@
 #define MAX_BILLS_PER_DAY 40
 #define MIN_BILL_AMT 100
 #define MAX_BILL_AMT 5000
+#define MAX_INTERVALS 11
 
 
 struct date{
@@ -17,25 +18,35 @@ struct date{
 };
 
 struct person{
-    char name[MAX_CUST];
+    char name[30];
 };
 
 struct details{
-    char name[MAX_CUST];
+    struct person p;
     double amt;
+    int interval;
 };
+
 
 struct bill{    
     struct details d[MAX_BILLS_PER_DAY];
     int limit;
     struct date dt;
+    double total_amt;
+    int day;
 };
 
 void read_cust_data(FILE* fp, struct person* p);
-int is_valid_dates(const struct date* start_date, const struct date* end_date);
+int is_valid_date(const struct date* cur_date);
+int is_valid_range(const struct date* start_date, const struct date* end_date);
 int date_diff(const struct date* start_date,const  struct date* end_date);
-void generate_bill(struct bill* b, const struct date* start_date, int days, struct person* p);
-void disp_data_by_day(struct bill* b, int days, struct person* p);
-void disp_data_by_person(struct bill* b, int days, struct person* p);
+void generate_bill(struct bill* b, const struct date* start_date, int bill_day, int days, struct person* p);
+void disp_data_all_dates(struct bill* b, int days);
+void disp_data_all_persons(struct bill* b, int days, struct person* p);
+void disp_data_by_date(struct bill* b, int days, struct date cur_date);
+void disp_data_by_person(struct bill* b, int days, char* cur_name);
+
+void disp_data_all_days(struct bill* b, int days);
+void disp_data_all_hours(struct bill* b, int days);
 
 #endif
