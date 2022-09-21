@@ -227,10 +227,8 @@ void disp_data_all_hours(struct bill* b, int days){
     char p1[3], p2[3];
     int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
     for(int i=0; i<days; i++){
-        if(b[i].day != 2){
-            for(int j=0; j<b[i].limit; j++){
-                total[b[i].d[j].interval] += b[i].d[j].amt;
-            }
+        for(int j=0; j<b[i].limit; j++){
+            total[b[i].d[j].interval] += b[i].d[j].amt;
         }
     }
     printf("TIME INTERVAL\t\tTOTAL AMOUNT\n");
