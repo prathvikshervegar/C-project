@@ -9,12 +9,12 @@ void read_cust_data(FILE* fp, struct person* p){
         printf("Error!!");
         exit(1);
     }
-    while(! feof(fp)){
-        for(int i=0;i<MAX_CUST; i++){
-            fgets(p[i].name, 29, fp);
-            p[i].name[strcspn(p[i].name, "\n")] = 0;
-            //printf("%d %s\n", i+1, p[i].name);
-        }
+    int i=0;
+    while(i<MAX_CUST && !feof(fp)){
+        fgets(p[i].name, 29, fp);
+        p[i].name[strcspn(p[i].name, "\n")] = 0;
+        //printf("%d %s\n", i+1, p[i].name);
+        ++i;
     }
 }
 

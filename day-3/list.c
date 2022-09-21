@@ -9,13 +9,46 @@ void read_cust_data(FILE* fp, struct person* p){
         printf("Error!!");
         exit(1);
     }
-    while(! feof(fp)){
-        for(int i=0;i<MAX_CUST; i++){
-            fgets(p[i].name, 29, fp);
-            p[i].name[strcspn(p[i].name, "\n")] = 0;
-            //printf("%d %s\n", i+1, p[i].name);
-        }
+    int i=0;
+    while(i<MAX_CUST && !feof(fp)){
+        fgets(p[i].name, 29, fp);
+        p[i].name[strcspn(p[i].name, "\n")] = 0;
+        //printf("%d %s\n", i+1, p[i].name);
+        ++i;
     }
+}
+
+const char* getfield(char* line, int num)
+{
+    const char* tok;
+    for (tok = strtok(line, ","); tok && *tok; tok = strtok(NULL, ",\n")){
+        if (!--num)
+            return tok;
+    }
+    return NULL;
+}
+
+void read_item_data(FILE* fp, struct item* item){ 
+    if(fp == NULL){
+        printf("Error!!");
+        exit(1);
+    }
+    char line[1024];
+    char *token;
+    int i = 0;
+    fgets(line, sizeof(line), fp);
+    while(fgets(line, sizeof(line), fp) != NULL)
+    {
+        token = strtok(line, ",");
+        strcpy(item[i].item_name, token);
+        token = strtok(NULL, ",");
+        item[i].price = atof(token);
+        ++i;
+    }
+
+    //for(int j=0; j<MAX_ITEM; j++){
+    //    printf("%d.\t%s\t\t%.2f\n", j+1, item[j].item_name, item[j].price);
+    //}
 }
 
 int is_valid_date(const struct date* cur_date){
@@ -117,7 +150,7 @@ static void set_period(int* hr1, char* p1, int* hr2, char* p2){
     }
 }
 
-void disp_data_all_dates(struct bill* b, int days){
+void disp_data_all_dates(const struct bill* b, int days){
     int hr1, hr2;
     char p1[3], p2[3];
     int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
@@ -129,7 +162,8 @@ void disp_data_all_dates(struct bill* b, int days){
                 hr1 = time[b[i].d[j].interval];
                 hr2 = time[b[i].d[j].interval]+1;
                 set_period(&hr1, p1, &hr2, p2);
-                printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n", j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
+                printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n",
+                        j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
             }
             printf("Total amount: Rs.%.2f\n", b[i].total_amt);
         }
@@ -140,7 +174,7 @@ void disp_data_all_dates(struct bill* b, int days){
 }
 
 
-void disp_data_all_persons(struct bill* b, int days, struct person* p){
+void disp_data_all_persons(const struct bill* b, int days, struct person* p){
     printf("\nBill details of all persons\n");
     printf("\tNAME\t\t\tTOTAL AMOUNT\n");
     double total[MAX_CUST] = {0};
@@ -158,8 +192,12 @@ void disp_data_all_persons(struct bill* b, int days, struct person* p){
     }
 }
 
+void disp_data_all_items(const struct bill* b, int days, struct item* item){
 
-void disp_data_by_date(struct bill* b, int days, struct date cur_date){
+}
+
+
+void disp_data_by_date(const struct bill* b, int days, struct date cur_date){
     int i=0;
     int hr1, hr2;
     char p1[3], p2[3];
@@ -174,7 +212,8 @@ void disp_data_by_date(struct bill* b, int days, struct date cur_date){
                     hr1 = time[b[i].d[j].interval];
                     hr2 = time[b[i].d[j].interval]+1;
                     set_period(&hr1, p1, &hr2, p2);
-                    printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n", j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
+                    printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n",
+                            j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
                 }
                 printf("Total amount: Rs.%.2f\n", b[i].total_amt);
             }    
@@ -187,7 +226,7 @@ void disp_data_by_date(struct bill* b, int days, struct date cur_date){
     }
 
 }
-void disp_data_by_person(struct bill* b, int days, char* cur_name){
+void disp_data_by_person(const struct bill* b, int days, char* cur_name){
     double total = 0;
     int found = 0;
     for(int i=0; i<days; i++){
@@ -206,9 +245,10 @@ void disp_data_by_person(struct bill* b, int days, char* cur_name){
     }
 }
 
-void disp_data_all_days(struct bill* b, int days){
+void disp_data_all_days(const struct bill* b, int days){
     double total[7] = {0};
-    char day_name[7][10] = {"Monday  ", "Tuesday  ", "Wednesday", "Thursday", "Friday  ", "Saturday", "Sunday  "};
+    char day_name[7][10] = {"Monday  ", "Tuesday  ", "Wednesday", "Thursday",
+                            "Friday  ", "Saturday", "Sunday  "};
     printf("DAY\t\tTOTAL AMOUNT\n");
     for(int i=0; i<days; i++){
         total[b[i].day-1] += b[i].total_amt;
@@ -221,14 +261,16 @@ void disp_data_all_days(struct bill* b, int days){
     }
 }
 
-void disp_data_all_hours(struct bill* b, int days){
+void disp_data_all_hours(const struct bill* b, int days){
     double total[MAX_INTERVALS] = {0};
     int hr1, hr2;
     char p1[3], p2[3];
     int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
     for(int i=0; i<days; i++){
-        for(int j=0; j<b[i].limit; j++){
-            total[b[i].d[j].interval] += b[i].d[j].amt;
+        if(b[i].day != 2){
+            for(int j=0; j<b[i].limit; j++){
+                total[b[i].d[j].interval] += b[i].d[j].amt;
+            }
         }
     }
     printf("TIME INTERVAL\t\tTOTAL AMOUNT\n");
@@ -259,7 +301,8 @@ static void next_date(struct date* bill_date){
     }
 }
 
-void generate_bill(struct bill* b, const struct date* start_date, int bill_day, int days, struct person* p){
+void generate_bill(struct bill* b, const struct date* start_date, int bill_day, 
+                    int days, struct person* p, struct item* item){
     struct date bill_date = *start_date;
     for(int i=0; i<days; i++){
         b[i].dt = bill_date;
@@ -273,7 +316,8 @@ void generate_bill(struct bill* b, const struct date* start_date, int bill_day, 
                 //temp[j] = rand()%limit;
                 b[i].d[j].interval = rand()%MAX_INTERVALS;
                 strcpy(b[i].d[j].p.name, p[temp[j]].name);
-                b[i].d[j].amt = (MIN_BILL_AMT+ rand()%(MAX_BILL_AMT-MIN_BILL_AMT)) + (double)rand()/100;
+                b[i].d[j].amt = (MIN_BILL_AMT+ rand()%(MAX_BILL_AMT-MIN_BILL_AMT)) 
+                                + (double)rand()/100;
                 b[i].total_amt += b[i].d[j].amt;
             }
             sort_By_interval(b, i);
