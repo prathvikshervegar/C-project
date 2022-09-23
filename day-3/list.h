@@ -33,7 +33,8 @@ struct item{
 struct details{
     struct person p;
     double amt;
-    int interval;
+    int hr;
+    int min;
     int no_of_items;
     struct item item[MAX_TRANSACTION];
 };

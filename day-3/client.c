@@ -83,12 +83,28 @@ int main(){
                     if(v){
                         printf("Enter Date 1: ");
                         scanf("%d %d %d", &d1.dd, &d1.mm, &d1.yy);
+                        if(! is_valid_date(&d1)){
+                            printf("Invalid date provided!!!\n");
+                            exit(1);
+                        }
                         printf("Enter Date 2: ");
                         scanf("%d %d %d", &d2.dd, &d2.mm, &d2.yy);
+                        if(! is_valid_date(&d2)){
+                            printf("Invalid date provided!!!\n");
+                            exit(1);
+                        }
+                        if(! is_valid_range(&start_date, &end_date)){
+                            printf("Invalid range provided!!!\n");
+                            exit(1);
+                        }
                     }
                     else{
                         printf("Enter the date: ");
                         scanf("%d %d %d", &d1.dd, &d1.mm, &d1.yy);
+                        if(! is_valid_date(&d1)){
+                            printf("Invalid date provided!!!\n");
+                            exit(1);
+                        }
                         d2 = d1;
                     }
                     start = date_diff(&start_date, &d1);

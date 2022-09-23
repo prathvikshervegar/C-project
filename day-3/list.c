@@ -90,9 +90,9 @@ int date_diff(const struct date* start_date,const  struct date* end_date){
 
 static int get_random_val(int min, int max, int day){
     if(day == 6 || day == 7)
-        min = 35;
+        min = MAX_BILLS_PER_DAY - 5;
     else
-        max = 35;
+        max = MAX_BILLS_PER_DAY - 5;
     return rand()%(max - min + 1) + min;
 }
 
@@ -105,22 +105,6 @@ static void generate_array_of_unique_indices(int* arr, int max){
             arr[i]= num;
             used[num]=1;
             ++i;
-        }
-    }
-}
-
-static void sort_By_interval(struct bill* b, int day)
-{
-    for(int i=0;i<b[day].limit-1;++i)
-    {
-        for(int j=i+1;j<b[day].limit;++j)
-        {
-            if(b[day].d[i].interval>b[day].d[j].interval)
-            {
-                struct details temp=b[day].d[i];
-                b[day].d[i]=b[day].d[j];
-                b[day].d[j]=temp;
-            }
         }
     }
 }
@@ -149,17 +133,18 @@ static void set_period(int* hr1, char* p1, int* hr2, char* p2){
 void disp_detailed_bill(const struct bill* b, int days){
     int hr1, hr2;
     char p1[3], p2[3];
-    int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
+    int bill_no = 0;
     for(int i=0; i<days; i++){
         printf("\nBill details of %d-%d-%d\n", b[i].dt.dd, b[i].dt.mm, b[i].dt.yy);
         if(b[i].day != 2){
             for(int j=0; j<b[i].limit; j++){
-                hr1 = time[b[i].d[j].interval];
-                hr2 = time[b[i].d[j].interval]+1;
+                hr1 = b[i].d[j].hr;
+                hr2 = b[i].d[j].hr+1;
                 set_period(&hr1, p1, &hr2, p2);
-                printf("\nBILL NO.: B-%d-%d\nTIME INTERVAL: %d:00%s-%d:00%s\n"
+                ++bill_no;
+                printf("\nBILL NO.: B-%05d\nTIME INTERVAL: %d:00%s-%d:00%s\n"
                         "NAME: %s\nITEMS:\n",
-                        i+1, j+1, hr1, p1, hr2, p2, b[i].d[j].p.name);
+                        bill_no, hr1, p1, hr2, p2, b[i].d[j].p.name);
                 printf("\tSL NO.\tITEM NAME\t\tAMOUNT\n");
                 for(int k=0; k<b[i].d[j].no_of_items; k++){
                     printf("\t%d.\t%s\t\tRs.%.2f\n", k+1, b[i].d[j].item[k].item_name, 
@@ -176,21 +161,23 @@ void disp_detailed_bill(const struct bill* b, int days){
 }
 
 void disp_data_all_dates(const struct bill* b, int days){
-    int hr1, hr2;
-    char p1[3], p2[3];
-    int time[MAX_INTERVALS] = {8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 21};
+    int bill_no = 0;
     for(int i=0; i<days; i++){
         printf("\nBill details of %d-%d-%d\n", b[i].dt.dd, b[i].dt.mm, b[i].dt.yy);
         if(b[i].day != 2){
             printf("BILL NO.\tTIME\t\t\tNAME\t\t\tAMOUNT\n");
-            for(int j=0; j<b[i].limit; j++){
-                hr1 = time[b[i].d[j].interval];
-                hr2 = time[b[i].d[j].interval]+1;
-                set_period(&hr1, p1, &hr2, p2);
-                printf("B-%d-%d\t\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n",
-                        i+1, j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
+            for(int j=0; j<b[i].limit; j++){ 
+                ++bill_no;
+                if(b[i].d[j].min < 10){
+                    printf("B-%05d\t\t%d:%02d\t\t%s\t\tRs.%.2f\n",
+                        bill_no, b[i].d[j].hr, b[i].d[j].min, b[i].d[j].p.name, b[i].d[j].amt);
+                }
+                else{
+                    printf("B-%05d\t\t%d:%d\t\t%s\t\tRs.%.2f\n",
+                        bill_no, b[i].d[j].hr, b[i].d[j].min, b[i].d[j].p.name, b[i].d[j].amt);
+                }
             }
-            printf("Total amount: Rs.%.2f\n", b[i].total_per_day);
+            printf("TOTAL OF THE DAY: Rs.%.2f\n", b[i].total_per_day);
         }
         else{
             printf("HOLIDAY\n");
@@ -229,8 +216,8 @@ void disp_data_by_date(const struct bill* b, int days, struct date cur_date){
             }
             else{
                 for(int j=0; j<b[i].limit; j++){
-                    hr1 = time[b[i].d[j].interval];
-                    hr2 = time[b[i].d[j].interval]+1;
+                    hr1 = b[i].d[j].hr;
+                    hr2 = b[i].d[j].hr+1;
                     set_period(&hr1, p1, &hr2, p2);
                     printf("%d.\t%d:00%s-%d:00%s\t\t%s\t\tRs.%.2f\n",
                             j+1, hr1, p1, hr2, p2, b[i].d[j].p.name, b[i].d[j].amt);
@@ -289,7 +276,11 @@ void disp_data_all_hours(const struct bill* b, int days){
     for(int i=0; i<days; i++){
         if(b[i].day != 2){
             for(int j=0; j<b[i].limit; j++){
-                total[b[i].d[j].interval] += b[i].d[j].amt;
+                for(int k=0; k<MAX_INTERVALS; k++){
+                    if(b[i].d[j].hr == time[k]){
+                        total[k] += b[i].d[j].amt;
+                    }
+                }
             }
         }
     }
@@ -347,6 +338,20 @@ static void next_date(struct date* bill_date){
     }
 }
 
+static void generate_bill_time(int* time){
+    int random = 10 + rand()% 12;
+    if((time[1] + random) >= 60){
+        ++time[0];
+        if(time[0] == 13){
+            time[0] = 16;
+        }
+        time[1] += random - 60;
+    }
+    else{
+        time[1] += random;
+    }
+}
+
 void generate_bill(struct bill* b, const struct date* start_date, int bill_day, 
                     int days, struct person* p, struct item* item){
     struct date bill_date = *start_date;
@@ -358,9 +363,12 @@ void generate_bill(struct bill* b, const struct date* start_date, int bill_day,
             b[i].limit = get_random_val(MIN_BILLS_PER_DAY, MAX_BILLS_PER_DAY, bill_day);
             int temp[b[i].limit];
             generate_array_of_unique_indices(temp, b[i].limit);
+            int time[2] = {8,0}; // stores values of hours and minutes 
             for(int j=0; j<b[i].limit; j++){
-                //temp[j] = rand()%limit;
-                b[i].d[j].interval = rand()%MAX_INTERVALS;
+                generate_bill_time(time);
+                b[i].d[j].hr = time[0];
+                b[i].d[j].min = time[1];
+                //b[i].d[j].interval = rand()%MAX_INTERVALS;
                 strcpy(b[i].d[j].p.name, p[temp[j]].name);
                 // b[i].d[j].amt = (MIN_BILL_AMT+ rand()%(MAX_BILL_AMT-MIN_BILL_AMT)) 
                 //                 + (double)rand()/100;
@@ -377,7 +385,6 @@ void generate_bill(struct bill* b, const struct date* start_date, int bill_day,
                 p[temp[j]].total_per_person += b[i].d[j].amt;
                 b[i].total_per_day += b[i].d[j].amt;
             }
-            sort_By_interval(b, i);
         }
         next_date(&bill_date);
         if(bill_day == 7)
