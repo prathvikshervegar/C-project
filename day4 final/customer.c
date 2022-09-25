@@ -22,6 +22,6 @@ void disp_data_all_persons(const struct person* p){
     printf("\nBill details of all persons\n");
     printf("\tNAME\t\t\tTOTAL AMOUNT\n");
     for(int i=0; i<MAX_CUST; i++){
-        printf("%d.\t%s\t\tRs.%.2f\n", i+1, p[i].name, p[i].total_per_person);
+        printf("%d.\t%-24sRs.%10.2f\n", i+1, p[i].name, p[i].total_per_person);
     }
 }

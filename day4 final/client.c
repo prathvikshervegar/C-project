@@ -68,7 +68,8 @@ int main(){
                 "\nEnter the choice for report: ");
         scanf("%d", &choice);
         switch(choice){
-            case 0: exit(1);
+            case 0: printf("Exiting...\n");
+                    exit(1);
             case 1: disp_data_all_dates(b, n+1);
                       break;
             case 2: disp_data_all_persons(p);
@@ -83,33 +84,40 @@ int main(){
                     scanf("%d", &v);
                     struct date d1;
                     struct date d2;
-                    switch (v){
-                        case 0: printf("Enter the date: ");
-                                scanf("%d %d %d", &d1.dd, &d1.mm, &d1.yy);
-                                if(! is_valid_date(&d1)){
-                                    printf("Invalid date provided!!!\n");
-                                    exit(1);
-                                }
-                                d2 = d1;
-                                break;
-                        case 1: printf("Enter Date 1: ");
-                                scanf("%d %d %d", &d1.dd, &d1.mm, &d1.yy);
-                                if(! is_valid_date(&d1)){
-                                    printf("Invalid date provided!!!\n");
-                                    exit(1);
-                                }
-                                printf("Enter Date 2: ");
-                                scanf("%d %d %d", &d2.dd, &d2.mm, &d2.yy);
-                                if(! is_valid_date(&d2)){
-                                    printf("Invalid date provided!!!\n");
-                                    exit(1);
-                                }
-                                if(! is_valid_range(&d1, &d2)){
-                                    printf("Invalid range provided!!!\n");
-                                    exit(1);
-                                }
-                                break;
-                        default: printf("Invalid choice");
+                    if(v == 0){
+                        printf("Enter the date: ");
+                        scanf("%d %d %d", &d1.dd, &d1.mm, &d1.yy);
+                        if(! is_valid_date(&d1)){
+                            printf("Invalid date provided!!!\n");
+                            break;
+                            //exit(1);
+                        }
+                        d2 = d1;
+                    }
+                    else if(v == 1){
+                        printf("Enter Date 1: ");
+                        scanf("%d %d %d", &d1.dd, &d1.mm, &d1.yy);
+                        if(! is_valid_date(&d1)){
+                            printf("Invalid date provided!!!\n");
+                            break;
+                            //exit(1);
+                        }
+                        printf("Enter Date 2: ");
+                        scanf("%d %d %d", &d2.dd, &d2.mm, &d2.yy);
+                        if(! is_valid_date(&d2)){
+                            printf("Invalid date provided!!!\n");
+                            break;
+                            //exit(1);
+                        }
+                        if(! is_valid_range(&d1, &d2)){
+                            printf("Invalid range provided!!!\n");
+                            break;
+                            //exit(1);
+                        }
+                    }
+                    else{
+                        printf("Invalid choice\n");
+                        break;
                     }
                     start = date_diff(&start_date, &d1);
                     end = start + date_diff(&d1, &d2);

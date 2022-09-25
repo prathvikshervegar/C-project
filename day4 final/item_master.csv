@@ -1,51 +1,51 @@
-ITEM           ,PRICE   ,QUANTITY
-Pen            ,15.00   ,30
-Pencil         ,10.00   ,45
-Notebook       ,40.00   ,25
-Desk           ,1500.00 ,15
-Chair          ,600.00  ,20
-Backpack       ,750.00  ,100
-Duster         ,45.00   ,30
-Glue           ,20.00   ,50
-Ruler          ,20.00   ,10
-Clock          ,350.00  ,36
-Whiteboard     ,800.00  ,9
-Helmet         ,2500.00 ,20
-Toothbrush     ,70.00   ,40
-Sweater        ,1000.00 ,25
-Cupboard       ,5000.00 ,5
-Pillow         ,300.00  ,100
-Coffee Maker   ,1800.00 ,20
-Bathing Soap   ,30.00   ,75
-Washing Soap   ,25.00   ,60
-Bed            ,2000.00 ,30
-Blanket        ,900.00  ,40
-Knife          ,110.00  ,70
-Gas Stove      ,4000.00 ,12
-Television     ,70000.00,8
-Induction Stove,3000.00 ,17
+ITEM,PRICE,QUANTITY
+Pen,15.00,30
+Pencil,10.00,45
+Notebook,40.00,25
+Desk,1500.00,15
+Chair,600.00,20
+Backpack,750.00,100
+Duster,45.00,30
+Glue,20.00,50
+Ruler,20.00,10
+Clock,350.00,36
+Whiteboard,800.00,9
+Helmet,2500.00,20
+Toothbrush,70.00,40
+Sweater,1000.00,25
+Cupboard,5000.00,5
+Pillow,300.00,100
+Coffee Maker,1800.00,20
+Bathing Soap,30.00,75
+Washing Soap,25.00,60
+Bed,2000.00,30
+Blanket,900.00,40
+Knife,110.00,70
+Gas Stove,4000.00,12
+Television,70000.00,8
+Induction Stove,3000.00,17
 Washing Machine,25000.00,14
-Fridge         ,35000.00,25
-Sofa           ,7500.00 ,20
-Cup            ,100.00  ,80
-Fork           ,45.00   ,75
-Spoon          ,40.00   ,90
-Water Bottle   ,60.00   ,60
-Pressure Cooker,2500.00 ,50
-Watch          ,3000.00 ,100
-Smartphone     ,27000.00,30
-Laptop         ,92000.00,40
-Headset        ,2500.00 ,50
-Keyboard       ,2000.00 ,55
-Mouse          ,750.00  ,80
+Fridge,35000.00,25
+Sofa,7500.00,20
+Cup,100.00,80
+Fork,45.00,75
+Spoon,40.00,90
+Water Bottle,60.00,60
+Pressure Cooker,2500.00,50
+Watch,3000.00,100
+Smartphone,27000.00,30
+Laptop,92000.00,40
+Headset,2500.00 ,50
+Keyboard,2000.00 ,55
+Mouse,750.00,80
 Vaccuum Cleaner,35000.00,24
-Playstation    ,60000.00,36
-Pickle         ,150.00  ,50
-Bread          ,45.00   ,30
-Butter         ,200.00  ,60
-Ghee           ,300.00  ,50
-Milk           ,50.00   ,20
-Sunflower Oil  ,200.00  ,30
-Coconut Oil    ,250.00  ,45
-Gingelly Oil   ,400.00  ,15
-Tissue Paper   ,50.00   ,200
+Playstation,60000.00,36
+Pickle,150.00,50
+Bread,45.00,30
+Butter,200.00,60
+Ghee,300.00,50
+Milk,50.00,20
+Sunflower Oil,200.00,30
+Coconut Oil,250.00,45
+Gingelly Oil,400.00,15
+Tissue Paper,50.00,200

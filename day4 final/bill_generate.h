@@ -8,6 +8,7 @@
 #define MAX_TRANSACTION 5
 
 struct details{
+    int bill_no;
     struct person p;
     double amt;
     int hr;
