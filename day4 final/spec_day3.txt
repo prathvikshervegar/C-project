@@ -1,0 +1,49 @@
+problem statement :
+Develop a datafile of billing information for analytics - continued on day2
+start in a new directory. copy the files of day2.
+
+structure:
+changes in input:
+- create another file - item_master
+  structure:
+  item name and rate per unit
+  have at least 50 items
+
+- create details bill for each transaction
+  summary file shall contain:
+  bill #, time, customer name, total amount
+  detail file shall contain:
+  sl #, item name, quantity, amount
+  Assume that the # of transactions shall be 1 to 5.
+     
+processing:
+- consider that the shop is closed on Tue
+- generate more sales on Sat and Sun.
+- shop has timings : 8.00 am to 1.00 pm and 4.00 pm to 10.00 pm.
+- Generate detailed bill report:
+  bill #, name, date
+  sl no  item name rate quantity amount
+  ....
+  
+  =====================
+   ...
+   
+- Generate the item sales report:
+datewise
+date : item name : total quantity : amount
+periodwise:
+from date:       to date :
+item name | quantity  | amount
+
+
+ 
+  
+
+
+  
+Report:
+- bill summary
+- total per day
+- compare sales by day of the week
+- compare sales by hours
+- total by name 
