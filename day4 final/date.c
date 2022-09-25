@@ -48,3 +48,22 @@ int date_diff(const struct date* start_date,const  struct date* end_date){
     res = res + end_date->dd;
     return res;
 }
+
+void next_date(struct date* bill_date){
+    int month[MAX_MONTH] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if((bill_date->yy%4 ==0 && bill_date->yy%100 != 0) || (bill_date->yy%400 == 0) ){
+        month[1]=29;
+    }
+    if(bill_date->dd == month[bill_date->mm-1]){
+        if(bill_date->mm == MAX_MONTH){
+            bill_date->mm = 1;
+            ++bill_date->yy;
+        }
+        else
+            ++bill_date->mm;
+        bill_date->dd = 1;
+    }
+    else{
+        ++bill_date->dd;
+    }
+}

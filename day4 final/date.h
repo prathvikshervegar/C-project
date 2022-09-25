@@ -14,5 +14,6 @@ int is_valid_date(const struct date* cur_date);
 int is_valid_range(const struct date* start_date, const struct date* end_date);
 int is_valid_day(int day);
 int date_diff(const struct date* start_date,const  struct date* end_date);
+void next_date(struct date* bill_date);
 
 #endif

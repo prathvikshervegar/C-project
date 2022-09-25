@@ -204,25 +204,6 @@ void disp_data_by_dates_and_items(const struct bill* b, int start, int end, cons
     }
 }
 
-static void next_date(struct date* bill_date){
-    int month[MAX_MONTH] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    if((bill_date->yy%4 ==0 && bill_date->yy%100 != 0) || (bill_date->yy%400 == 0) ){
-        month[1]=29;
-    }
-    if(bill_date->dd == month[bill_date->mm-1]){
-        if(bill_date->mm == MAX_MONTH){
-            bill_date->mm = 1;
-            ++bill_date->yy;
-        }
-        else
-            ++bill_date->mm;
-        bill_date->dd = 1;
-    }
-    else{
-        ++bill_date->dd;
-    }
-}
-
 static void generate_bill_time(int* time){
     int random = 10 + rand()% 13;
     if((time[1] + random) >= 60){
