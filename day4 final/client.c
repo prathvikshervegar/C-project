@@ -117,10 +117,14 @@ int main(){
                     }
                     else{
                         printf("Invalid choice\n");
-                        break;
+                        exit(1);
                     }
                     start = date_diff(&start_date, &d1);
-                    end = start + date_diff(&d1, &d2);
+                    end = n - date_diff(&d2, &end_date);
+                    if(start < 0 || end > n+1){
+                        printf("Date out of range\n");
+                        break;
+                    }
                     disp_data_by_dates_and_items(b, start, end, item);
                     break;        
             case 7: printf("Enter the date(dd mm yyyy): ");
