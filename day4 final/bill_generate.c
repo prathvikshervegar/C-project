@@ -243,7 +243,6 @@ void generate_bill(struct bill* b, const struct date* start_date, int bill_day,
                 b[i].d[j].amt = 0;
                 int select[b[i].d[j].no_of_items];
                 generate_array_of_unique_indices(select, b[i].d[j].no_of_items);
-                //for(int k=0; k<b[i].d[j].no_of_items; k++){
                 int k = 0;
                 while(k < b[i].d[j].no_of_items){
                     int available = item[select[k]].initial_quantity - item[select[k]].quantity_sold;
