@@ -1,0 +1,16 @@
+problem statement :
+Develop a datafile of billing information for analytics - start with a new directory.
+copy files after completing day4 work.
+
+structure:
+item master shall have an extra column - available quantity.
+On generation bill, the quantity shall be decreased.
+If quantity is not available, sale shall not happen.
+there shall be no partial sale.
+
+report:
+report items which could not be sold.
+Date - time - customer - available quantity - required quantity
+...
+
+
