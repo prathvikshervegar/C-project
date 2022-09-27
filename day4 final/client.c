@@ -129,6 +129,11 @@ int main(){
                     break;        
             case 7: printf("Enter the date(dd mm yyyy): ");
                     scanf("%d %d %d",&cur_date.dd, &cur_date.mm, &cur_date.yy);
+                    if(! is_valid_date(&cur_date)){
+                        printf("Invalid date provided!!!\n");
+                        break;
+                        //exit(1);
+                    }
                     disp_data_by_date(b, n+1, cur_date);
                     break;
             case 8: printf("Enter the name of person(Firstname Lastname): ");
